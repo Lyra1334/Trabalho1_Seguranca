@@ -41,6 +41,7 @@ def Codificar(mensagem:str, chave:str):
             output += letra
         #incrementa a posição pra próxima letra, e volta pro 0 se position = len(chave)
         position = (position+1)%len(chave)
+    return output
 
 def Decodificar(mensagem:str, chave:str):
     output = ""
@@ -55,3 +56,4 @@ def Decodificar(mensagem:str, chave:str):
             output += letra
         #incrementa a posição pra próxima letra, e volta pro 0 se position = len(chave)
         position = (position+1)%len(chave)
+    return output
