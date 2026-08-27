@@ -1,3 +1,5 @@
+from unicodedata import normalize
+
 def LetterShift(char:str, shiftChar:str, sum:bool = True):
     #Char é o caractere original, shiftChar é o da chave
     #sum indica se vai "somar" ou "subtrair" o caractere
@@ -29,6 +31,8 @@ def LetterShift(char:str, shiftChar:str, sum:bool = True):
 
     
 def Codificar(mensagem:str, chave:str):
+    if not(mensagem.isascii() and chave.isascii()):
+        raise ValueError("String must have only ascii characters.")
     output = ""
     position = 0
     #position é a posição atual na chave
@@ -44,6 +48,8 @@ def Codificar(mensagem:str, chave:str):
     return output
 
 def Decodificar(mensagem:str, chave:str):
+    if not(mensagem.isascii() and chave.isascii()):
+        raise ValueError("String must have only ascii characters.")
     output = ""
     position = 0
     #position é a posição atual na chave
