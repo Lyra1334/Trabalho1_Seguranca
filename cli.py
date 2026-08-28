@@ -17,7 +17,11 @@ def ler_mensagem(args):
 
 def executar_cifra(args):
     mensagem = ler_mensagem(args)
-    print(args.funcao(mensagem, args.chave))
+    resultado = args.funcao(mensagem, args.chave)
+    if args.saida:
+        args.saida.write_text(resultado, encoding="utf-8")
+    else:
+        print(resultado)
 
 
 def executar_quebra(args):
@@ -26,6 +30,9 @@ def executar_quebra(args):
 
 def adicionar_entrada(parser):
     parser.add_argument("chave", help="chave da cifra")
+    parser.add_argument(
+        "-o", "--output", dest="saida", type=Path, help="arquivo de saída"
+    )
     entrada = parser.add_mutually_exclusive_group(required=True)
     entrada.add_argument("mensagem", nargs="?", help="texto a processar")
     entrada.add_argument(

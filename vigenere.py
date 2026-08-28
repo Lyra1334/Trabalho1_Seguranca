@@ -1,4 +1,17 @@
-from unicodedata import normalize
+from unicodedata import combining, normalize
+
+
+def RemoverAcentos(texto: str):
+    output = ""
+    letra_latina = False
+    for char in normalize("NFD", texto):
+        if combining(char) and letra_latina:
+            continue
+        if not combining(char):
+            letra_latina = char.isascii() and char.isalpha()
+        output += char
+    return normalize("NFC", output)
+
 
 def LetterShift(char:str, shiftChar:str, sum:bool = True):
     #Char é o caractere original, shiftChar é o da chave
@@ -31,15 +44,17 @@ def LetterShift(char:str, shiftChar:str, sum:bool = True):
 
     
 def Codificar(mensagem:str, chave:str):
-    if not(mensagem.isascii() and chave.isascii()):
-        raise ValueError("String must have only ascii characters.")
+    mensagem = RemoverAcentos(mensagem)
+    chave = RemoverAcentos(chave)
+    if not chave:
+        raise ValueError("Key must not be empty.")
     output = ""
     position = 0
     #position é a posição atual na chave
 
 
     for letra in mensagem:
-        if letra.isalpha():
+        if letra.isascii() and letra.isalpha():
             output += LetterShift(letra, chave[position])
         else:
             output += letra
@@ -48,15 +63,17 @@ def Codificar(mensagem:str, chave:str):
     return output
 
 def Decodificar(mensagem:str, chave:str):
-    if not(mensagem.isascii() and chave.isascii()):
-        raise ValueError("String must have only ascii characters.")
+    mensagem = RemoverAcentos(mensagem)
+    chave = RemoverAcentos(chave)
+    if not chave:
+        raise ValueError("Key must not be empty.")
     output = ""
     position = 0
     #position é a posição atual na chave
     
     
     for letra in mensagem:
-        if letra.isalpha():
+        if letra.isascii() and letra.isalpha():
             output += LetterShift(letra, chave[position], False)
         else:
             output += letra
