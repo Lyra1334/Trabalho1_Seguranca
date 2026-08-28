@@ -63,3 +63,9 @@ def Decodificar(mensagem:str, chave:str):
         #incrementa a posição pra próxima letra, e volta pro 0 se position = len(chave)
         position = (position+1)%len(chave)
     return output
+
+
+if __name__ == "__main__":
+    from cli import main
+
+    main()
