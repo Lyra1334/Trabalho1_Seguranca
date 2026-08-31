@@ -56,10 +56,10 @@ def Codificar(mensagem:str, chave:str):
     for letra in mensagem:
         if letra.isascii() and letra.isalpha():
             output += LetterShift(letra, chave[position])
+            # A chave só avança quando uma letra é cifrada.
+            position = (position+1)%len(chave)
         else:
             output += letra
-        #incrementa a posição pra próxima letra, e volta pro 0 se position = len(chave)
-        position = (position+1)%len(chave)
     return output
 
 def Decodificar(mensagem:str, chave:str):
@@ -75,10 +75,10 @@ def Decodificar(mensagem:str, chave:str):
     for letra in mensagem:
         if letra.isascii() and letra.isalpha():
             output += LetterShift(letra, chave[position], False)
+            # Mantém o mesmo alinhamento usado por Codificar.
+            position = (position+1)%len(chave)
         else:
             output += letra
-        #incrementa a posição pra próxima letra, e volta pro 0 se position = len(chave)
-        position = (position+1)%len(chave)
     return output
 
 

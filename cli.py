@@ -2,10 +2,10 @@ import argparse
 from pathlib import Path
 
 try:
-    from .quebra import Quebrar
+    from .quebra import ENGLISH_FREQUENCIES, PT_BR_FREQUENCIES, decode_file
     from .vigenere import Codificar, Decodificar
 except ImportError:
-    from quebra import Quebrar
+    from quebra import ENGLISH_FREQUENCIES, PT_BR_FREQUENCIES, decode_file
     from vigenere import Codificar, Decodificar
 
 
@@ -25,7 +25,9 @@ def executar_cifra(args):
 
 
 def executar_quebra(args):
-    Quebrar(str(args.arquivo))
+    frequencies = PT_BR_FREQUENCIES if args.pt_br else ENGLISH_FREQUENCIES
+    resultado = decode_file(str(args.arquivo), frequencies)
+    print(resultado)
 
 
 def adicionar_entrada(parser):
@@ -54,6 +56,11 @@ def criar_parser():
 
     break_parser = comandos.add_parser("break", help="tenta quebrar um arquivo")
     break_parser.add_argument("arquivo", type=Path, help="arquivo de entrada")
+    break_parser.add_argument(
+        "--pt-br",
+        action="store_true",
+        help="usa frequências de letras do português brasileiro",
+    )
     break_parser.set_defaults(executar=executar_quebra)
 
     return parser
